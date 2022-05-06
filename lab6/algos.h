@@ -1,4 +1,5 @@
 #pragma once
+#include <exception>
 
 template <typename iterator, typename type>
 bool all_of(const iterator& begin, const iterator& end, bool (&predicate)(type)) {
@@ -25,7 +26,7 @@ bool is_partitioned(const iterator& begin, const iterator& end, bool (&predicate
         }
     }
     return true;
-};
+}
 
 template <typename iterator, typename element>
 int find_backward(const iterator& end, const iterator& begin, element el) {
@@ -35,6 +36,9 @@ int find_backward(const iterator& end, const iterator& begin, element el) {
             return pos;
         pos++;
     }
-
-    return 0;
-};
+    try {
+        if (*begin == el) return pos;
+        else throw (el);
+    }
+    catch(element el) { std::cout << "No element " << el << " found"; exit(1);}
+}
