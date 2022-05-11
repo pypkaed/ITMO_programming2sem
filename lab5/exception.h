@@ -1,23 +1,16 @@
 #pragma once
 #include <string>
 
-class baseException {
-protected:
-    std::string Error;
+class emptyException : public std::exception {
 public:
-    virtual std::string what() = 0;
+    const char* what() const noexcept override {
+        return "Queue is empty.";
+    }
 };
 
-class isEmptyException : public baseException {
+class overflowException : public std::exception {
 public:
-    isEmptyException();
-    ~isEmptyException() = default;
-    std::string what() override;
-};
-
-class overflowException : public baseException {
-public:
-    overflowException();
-    ~overflowException() = default;
-    std::string what() override;
+    const char* what() const noexcept override {
+        return "Queue overflow.";
+    }
 };

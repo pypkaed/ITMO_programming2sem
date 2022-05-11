@@ -10,9 +10,13 @@
 int main() {
     // testing the template function (swap)
     int a = 0, b = 124;
+    std::cout << "before: " << a << ", " << b << '\n';
     swap(a, b);
+    std::cout << "after: " << a << ", " << b << '\n';
     char *c = "first", *d = "second";
+    std::cout << "before: " << c << ", " << d << '\n';
     swap<char*>(c, d);
+    std::cout << "after: " << c << ", " << d << '\n';
 
     // testing the template class (queue)
     myQueue<int, 5> Q;

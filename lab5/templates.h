@@ -1,14 +1,12 @@
 #pragma once
 #include "exception.h"
 #include <iostream>
-
+// queue fix: push(5) pop(5) - should work and not exit
 template<typename T>
 void swap(T &a, T &b) {
-    std::cout << "before: " << a << ", " << b << '\n';
     T temp = a;
     a = b;
     b = temp;
-    std::cout << "after: " << a << ", " << b << '\n';
 }
 
 template<typename T, size_t N>
@@ -16,11 +14,14 @@ class myQueue {
 private:
     T* arr;
     int back_id, front_id;
+    int capacity, count;
 public:
     myQueue() {
         arr = new T[N];
+        capacity = N;
         back_id = 0;
         front_id = 1;
+        count = 0;
     };
     ~myQueue() {
         delete[] arr;
@@ -28,30 +29,37 @@ public:
     void push(T);
     T pop();
     bool empty();
+    bool full();
 };
 
 template<typename T, size_t N>
 void myQueue<T, N>::push(T element) {
-    if (back_id < N) {
-        back_id++;
-        arr[back_id] = element;
-    }
-    else
+    if (full())
         throw overflowException();
+
+    back_id = (back_id + 1) % capacity;
+    arr[back_id] = element;
+    count++;
 }
 
 template<typename T, size_t N>
 T myQueue<T, N>::pop() {
-    if (!empty()) {
-        T key = arr[front_id];
-        front_id++;
-        return key;
-    }
-    else
-        throw isEmptyException();
+    if (empty())
+        throw emptyException();
+
+    T key = arr[front_id];
+    front_id = (front_id + 1) % capacity;
+    count--;
+    return key;
 }
 
 template<typename T, size_t N>
 bool myQueue<T, N>::empty() {
-    return (back_id < front_id);
+    return (count == 0);
 }
+
+template<typename T, size_t N>
+bool myQueue<T, N>::full() {
+    return (count == capacity);
+}
+
