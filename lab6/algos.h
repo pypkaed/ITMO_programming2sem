@@ -1,8 +1,8 @@
 #pragma once
 #include <exception>
 
-template <typename iterator, typename type>
-bool all_of(const iterator& begin, const iterator& end, bool (&predicate)(type)) {
+template <typename iterator, typename Func>
+bool all_of(const iterator& begin, const iterator& end, Func predicate) {
     for (iterator curr = begin; curr != end; curr++) {
         if (!predicate(*curr))
             return false;
@@ -10,8 +10,8 @@ bool all_of(const iterator& begin, const iterator& end, bool (&predicate)(type))
     return true;
 }
 
-template <typename iterator, typename type>
-bool is_partitioned(const iterator& begin, const iterator& end, bool (&predicate)(type)) {
+template <typename iterator, typename Func>
+bool is_partitioned(const iterator& begin, const iterator& end, Func predicate) {
     bool equal = true;
     iterator bend;
     for (iterator curr = begin + 1; equal; curr++) {
@@ -29,16 +29,14 @@ bool is_partitioned(const iterator& begin, const iterator& end, bool (&predicate
 }
 
 template <typename iterator, typename element>
-int find_backward(const iterator& end, const iterator& begin, element el) {
-    int pos = 0;
+iterator find_backward(const iterator& begin, const iterator& end, element el) {
     for (iterator curr = end; curr != begin; curr--) {
         if (*curr == el)
-            return pos;
-        pos++;
+            return curr;
     }
-    try {
-        if (*begin == el) return pos;
-        else throw (el);
-    }
-    catch(element el) { std::cout << "No element " << el << " found"; exit(1);}
+
+    if (*begin == el)
+        return begin;
+
+    return end;
 }
