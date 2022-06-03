@@ -141,6 +141,12 @@ public:
                 curr_size++;
             return;
         }
+        if (front == rear) {
+            if (front == 0)
+                front = capacity;
+            else
+                front--;
+        }
 
         T tmp = arr[rear];
         if (rear == 0)
@@ -156,12 +162,34 @@ public:
         if (curr_size < capacity)
             curr_size++;
     }
+
     void push(const T &element, const int& index) {
         int tmp = front + index;
         if (tmp > capacity)
             tmp -= capacity + 1;
         arr[tmp] = element;
     }
+
+    void pop_back() {
+        if (empty()) return;
+
+        arr[rear] = 0;
+        curr_size--;
+        if (rear == 0)
+            rear = capacity;
+        else
+            rear--;
+    }
+    void pop_front() {
+        if (empty()) return;
+
+        arr[front] = 0;
+        curr_size--;
+        if (front == capacity)
+            front = 0;
+        else front++;
+    }
+
     void resize(const int& new_size) {
         if (new_size == capacity) return;
         T* tmp_arr = new T[new_size];
@@ -188,6 +216,7 @@ public:
             rear = curr;
             arr = tmp_arr;
             capacity = new_size;
+            curr_size = capacity;
         }
     }
 };

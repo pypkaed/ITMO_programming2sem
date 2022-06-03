@@ -34,11 +34,17 @@ int main() {
     buf.show();
     buf.push_back(13);
     buf.show();
-    buf.resize(3);
+    buf.resize(4);
     buf.show();
     buf.push_back(14);
     buf.show();
     buf.push_front(15);
+    buf.show();
+    buf.pop_front();
+    buf.show();
+    buf.pop_back();
+    buf.show();
+    buf.push_back(16);
     buf.show();
 
     for_each(buf.begin(), buf.end(), [](const int &n) { std::cout << n << " "; });
